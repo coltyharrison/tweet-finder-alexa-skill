@@ -1,0 +1,22 @@
+{
+  "intents": [
+    {
+      "intent": "LaunchRequest",
+      "slots": [
+        {
+          "name": "SearchTerm",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    }
+  ]
+}

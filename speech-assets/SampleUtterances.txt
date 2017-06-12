@@ -1,0 +1,30 @@
+ImmediateSearchTweets search for {donald trump|SearchTerm}
+ImmediateSearchTweets search for {pizza|SearchTerm}
+ImmediateSearchTweets search for {the mariners|SearchTerm}
+ImmediateSearchTweets search for {review|SearchTerm}
+ImmediateSearchTweets search for {the new york times|SearchTerm}
+ImmediateSearchTweets the latest tweet on {portland|SearchTerm}
+ImmediateSearchTweets find a tweet about {saturday night live|SearchTerm}
+ImmediateSearchTweets the latest tweet on {harry potter|SearchTerm}
+ImmediateSearchTweets the latest tweet on {gay marriage|SearchTerm}
+ImmediateSearchTweets find a tweet on {Golden State Warriors|SearchTerm}
+ImmediateSearchTweets to search for {Game of Thrones|SearchTerm}
+ImmediateSearchTweets for the latest tweet on the {UK elections|SearchTerm}
+ImmediateSearchTweets to find a tweet about {Volcanoes|SearchTerm}
+SearchTweets {donald trump|SearchTerm}
+SearchTweets {pizza|SearchTerm}
+SearchTweets {the mariners|SearchTerm}
+SearchTweets {review|SearchTerm}
+SearchTweets {the new york times|SearchTerm}
+SearchTweets {portland|SearchTerm}
+SearchTweets {saturday night live|SearchTerm}
+SearchTweets {harry potter|SearchTerm}
+SearchTweets {gay marriage|SearchTerm}
+SearchTweets {golden state warriors|SearchTerm}
+SearchTweets {game of thrones|SearchTerm}
+SearchTweets {UK elections|SearchTerm}
+SearchTweets {volcanoes|SearchTerm}
+NewSession open tweet finder
+NewSession start tweet finder
+NewSession begin tweet finder
+NewSession launch tweet finder
