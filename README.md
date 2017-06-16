@@ -14,7 +14,7 @@ Alexa, ask Tweet Finder to find a tweet about Volcanoes
 • Node.js 6.10.0<br>
 • AWS Lambda<br>
 • DynamoDB<br>
-• <a href="https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs">alexa-sdk</a>
+• <a href="https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs">alexa-sdk</a><br>
 • Twitter API / <a href="https://github.com/ttezel/twit">twit</a>
 
 Available to enable on your Echo device through Amazon:<br>
