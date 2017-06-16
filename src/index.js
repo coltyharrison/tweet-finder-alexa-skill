@@ -19,16 +19,13 @@ const Alexa = require('alexa-sdk'),
         'Alexa, ask Tweet Finder to search for Game of Thrones',
         'Alexa, ask Tweet Finder for the latest tweet on the UK elections',
         'Alexa, ask Tweet Finder to to find a tweet about Volcanoes'
-      ],
-      STATES = {
-        GIVE_SEARCH_TERM: '_GIVE_SEARCH_TERM'
-      };
+      ];
 
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.APP_ID = CONFIG.APP_ID;
-    alexa.registerHandlers(immediateSessionHandler, secondStepHandler);
+    alexa.registerHandlers(handlers);
     alexa.dynamoDBTableName = 'Alexa-Tweet-Finder';
     alexa.execute();
 };
@@ -61,16 +58,17 @@ function parseTweet(tweet) {
   }
 }
 
-var immediateSessionHandler = {
-    'NewSession': function() {
-      this.attributes.date = new Date();
-      this.handler.state = STATES.GIVE_SEARCH_TERM;
-      const rIndx = Math.floor(Math.random() * 13);
-      this.emit(':ask', "Hello! To use Tweet Finder, please respond with a subject, topic, " +
-                         "person, place, or trend, and I will give you the latest " +
-                         "tweet about it.");
+
+const handlers = {
+    'LaunchRequest': function() {
+      this.emit('SearchPrompt');
+    },
+    'SearchPrompt': function() {
+      this.emit(':ask', "Welcome to Tweet Finder! Respond with a topic, person, place, thing" +
+                        ", or event, and I will give you the latest tweet about it.");
     },
     'ImmediateSearchTweets': function () {
+      console.log('IST!');
         this.attributes.date = new Date();
         const T = new Twit({
           consumer_key: CONFIG.CONSUMER_KEY,
@@ -78,12 +76,14 @@ var immediateSessionHandler = {
           access_token: CONFIG.ACCESS_TOKEN,
           access_token_secret: CONFIG.ACCESS_TOKEN_SECRET
         });
-        if (!this.event.request.intent.slots.SearchTerm.value) {
+        if (!this.event.request.intent.slots.ISTTerm.value) {
+          console.log('not working');
           this.attributes.search_term = null;
           this.attributes.found = false;
           this.emit('Unhandled');
         } else {
-          const searchTerm = this.event.request.intent.slots.SearchTerm.value;
+          console.log('working');
+          const searchTerm = this.event.request.intent.slots.ISTTerm.value;
           let self = this;
           self.attributes.search_term = searchTerm;
           T.get('search/tweets', { q: searchTerm, count: 1, result_type: 'recent', lang: 'en' }, function(err, data, response) {
@@ -98,53 +98,20 @@ var immediateSessionHandler = {
           });
         }
     },
-    'AMAZON.HelpIntent': function () {
-        const rIndx = Math.floor(Math.random() * 13);
-        const speechOutput = HELP_MESSAGE + RANDOM_RESPONSES[rIndx];
-        this.emit(':ask', speechOutput);
-    },
-    'AMAZON.CancelIntent': function () {
-        this.emit(':tell', STOP_MESSAGE);
-    },
-    'AMAZON.StopIntent': function () {
-        this.emit(':tell', STOP_MESSAGE);
-    },
-    'SessionEndedRequest': function() {
-        this.handler.state = '';
-        this.emit(':saveState', true);
-    },
-    'Unhandled': function() {
-        const rIndx = Math.floor(Math.random() * 13);
-        this.emit(':ask', "I'm sorry. I didn't understand that. Find a tweet " +
-                          "by saying something like, " + RANDOM_RESPONSES[rIndx]);
-    },
-    'NotFound': function() {
-      this.emit(':tell', "I couldn't find any tweets about that.");
-    }
-};
-
-var secondStepHandler = Alexa.CreateStateHandler(STATES.GIVE_SEARCH_TERM, {
-    'NewSession': function() {
-      this.handler.state = '';
-      this.emit('NewSession');
-    },
-    'ImmediateSearchTweets': function() {
-      this.handler.state = '';
-      this.emit('ImmediateSearchTweets');
-    },
     'SearchTweets': function() {
+      console.log('searchtweets2');
       const T = new Twit({
         consumer_key: CONFIG.CONSUMER_KEY,
         consumer_secret: CONFIG.CONSUMER_SECRET,
         access_token: CONFIG.ACCESS_TOKEN,
         access_token_secret: CONFIG.ACCESS_TOKEN_SECRET
       });
-      if (!this.event.request.intent.slots.SearchTerm.value) {
+      if (!this.event.request.intent.slots.STTerm.value) {
         this.attributes.search_term = null;
         this.attributes.found = false;
         this.emit('Unhandled');
       } else {
-        const searchTerm = this.event.request.intent.slots.SearchTerm.value;
+        const searchTerm = this.event.request.intent.slots.STTerm.value;
         let self = this;
         self.attributes.search_term = searchTerm;
         T.get('search/tweets', { q: searchTerm, count: 1, result_type: 'recent', lang: 'en' }, function(err, data, response) {
@@ -159,15 +126,10 @@ var secondStepHandler = Alexa.CreateStateHandler(STATES.GIVE_SEARCH_TERM, {
         });
       }
     },
-    'Unhandled': function() {
-        const rIndx = Math.floor(Math.random() * 13);
-        this.emit(':tell', "I'm sorry. I didn't understand that. Please repeat " +
-                           "you would like me to search for.");
-    },
     'AMAZON.HelpIntent': function () {
-        this.emit(':ask', "Please respond with a subject, topic, person, place, " +
-                           "or trend, and I will give you the latest " +
-                           "tweet about it.");
+        const rIndx = Math.floor(Math.random() * 13);
+        const speechOutput = HELP_MESSAGE + RANDOM_RESPONSES[rIndx];
+        this.emit(':ask', speechOutput);
     },
     'AMAZON.CancelIntent': function () {
         this.emit(':tell', STOP_MESSAGE);
@@ -176,10 +138,16 @@ var secondStepHandler = Alexa.CreateStateHandler(STATES.GIVE_SEARCH_TERM, {
         this.emit(':tell', STOP_MESSAGE);
     },
     'SessionEndedRequest': function() {
-        this.handler.state = '';
         this.emit(':saveState', true);
     },
+    'Unhandled': function() {
+      console.log('unhandled1');
+        const rIndx = Math.floor(Math.random() * 13);
+        this.emit(':ask', "I'm sorry. I didn't understand that. Find a tweet " +
+                          "by saying something like, " + RANDOM_RESPONSES[rIndx]);
+    },
     'NotFound': function() {
+      console.log('notfound1');
       this.emit(':tell', "I couldn't find any tweets about that.");
     }
-});
+};

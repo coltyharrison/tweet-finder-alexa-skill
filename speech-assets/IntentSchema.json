@@ -1,13 +1,22 @@
 {
   "intents": [
     {
-      "intent": "LaunchRequest",
       "slots": [
         {
-          "name": "SearchTerm",
+          "name": "ISTTerm",
           "type": "AMAZON.LITERAL"
         }
-      ]
+      ],
+      "intent": "ImmediateSearchTweets"
+    },
+    {
+      "slots": [
+        {
+          "name": "STTerm",
+          "type": "AMAZON.LITERAL"
+        }
+      ],
+      "intent": "SearchTweets"
     },
     {
       "intent": "AMAZON.CancelIntent"
